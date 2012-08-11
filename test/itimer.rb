@@ -56,15 +56,16 @@ class ItimerTest < Test::Unit::TestCase
     assert_in_delta( Time.now-start, 1, 0.1 )
 
     start = Time.now
+    Itimer.set_interval(:real, 1.2)
     Itimer.set(:real, 0.5)
-    Itimer.set_interval(:real, 1)
+    assert_in_delta( 1.2, Itimer.get_interval(:real), 0.1 )
     assert_equal( 'ALRM', wait_for_sig.call )
     assert_in_delta( Time.now-start, 0.5, 0.1 )
-    assert_in_delta( Itimer.get(:real), 1, 0.1 )
+    assert_in_delta( Itimer.get(:real), 1.2, 0.1 )
 
     start = Time.now
     assert_equal( 'ALRM', wait_for_sig.call )
-    assert_in_delta( Time.now-start, 1, 0.1 )
+    assert_in_delta( Time.now-start, 1.2, 0.1 )
     Itimer.set_interval(:real, 0)
   end
 

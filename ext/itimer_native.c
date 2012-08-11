@@ -49,8 +49,15 @@ VALUE rb_itimer_set_interval(VALUE self, VALUE which_val, VALUE new_value) {
   struct itimerval value;
   getitimer(which_from_val(which_val), &value);
 
-  value.it_interval.tv_sec = NUM2INT(new_value);
-  value.it_interval.tv_usec = 0;
+  double dbl_value = NUM2DBL(new_value);
+
+  value.it_interval.tv_sec = (int)floor(dbl_value);
+  value.it_interval.tv_usec = (dbl_value - floor(dbl_value)) * 1000000;
+
+  if (value.it_value.tv_sec == 0 && value.it_value.tv_usec == 0) {
+    value.it_value.tv_sec = (int)floor(dbl_value);
+    value.it_value.tv_usec = (dbl_value - floor(dbl_value)) * 1000000;
+  }
 
   int ret = setitimer(which_from_val(which_val), &value, NULL);
   if (ret != 0) {
