@@ -4,8 +4,8 @@ Gem::Specification.new do |s|
 
   s.authors = ['Nate Mueller']
   s.date = '2012-08-10'
-  s.summary = 'Simple wrapper around POSIX interval timer functions'
-  s.description = 'Simple wrapper around POSIX interval timer functions'
+  s.summary = 'Timeout replacement using POSIX interval timers'
+  s.description = 'Drop-in replacement for stdlib Timeout that uses POSIX interval timers instead of threads.  Not as portable but much lighter weight.  Also includes low-level wrappers for setitimer and getitimer.'
   s.email = 'hackers@nearbuysystems.com'
   s.homepage = 'http://github.com/nearbuy/itimer'
 
