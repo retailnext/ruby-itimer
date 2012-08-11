@@ -1,13 +1,13 @@
 Gem::Specification.new do |s|
   s.name = 'itimer'
-  s.version = '2'
+  s.version = '3'
 
   s.authors = ['Nate Mueller']
   s.date = '2012-08-10'
   s.summary = 'Timeout replacement using POSIX interval timers'
   s.description = 'Drop-in replacement for stdlib Timeout that uses POSIX interval timers instead of threads.  Not as portable but much lighter weight.  Also includes low-level wrappers for setitimer and getitimer.'
   s.email = 'hackers@nearbuysystems.com'
-  s.homepage = 'http://github.com/nearbuy/itimer'
+  s.homepage = 'http://github.com/nearbuy/ruby-itimer'
 
   s.extensions = 'ext/extconf.rb'
   s.files = ['README.md', 'Rakefile', 'lib/itimer.rb', 'lib/itimer/compat.rb', 'test/itimer.rb', 'ext/extconf.rb', 'ext/itimer_native.c']
