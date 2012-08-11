@@ -1,5 +1,6 @@
 require 'itimer'
 require 'test/unit'
+require 'itimer/compat'
 
 class ItimerTest < Test::Unit::TestCase
   def test_itimer
@@ -76,6 +77,14 @@ class ItimerTest < Test::Unit::TestCase
     start = Time.now
     assert_raises( RuntimeError ) do
       Itimer.timeout(0.25, RuntimeError) { sleep 5 }
+    end
+    assert_in_delta( Time.now-start, 0.25, 0.1 )
+  end
+
+  def test_compat
+    start = Time.now
+    assert_raises( Timeout::Error ) do
+      Timeout::timeout(0.25) { sleep 5 }
     end
     assert_in_delta( Time.now-start, 0.25, 0.1 )
   end
