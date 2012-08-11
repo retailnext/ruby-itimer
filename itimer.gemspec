@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'itimer'
-  s.version = '1'
+  s.version = '2'
 
   s.authors = ['Nate Mueller']
   s.date = '2012-08-10'
@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.homepage = 'http://github.com/nearbuy/itimer'
 
   s.extensions = 'ext/extconf.rb'
+  s.files = ['README.md', 'Rakefile', 'lib/itimer.rb', 'lib/itimer/compat.rb', 'test/itimer.rb', 'ext/extconf.rb', 'ext/itimer_native.c']
 
   s.required_ruby_version = '>= 1.9.2'
   s.add_development_dependency 'rake-compiler', '~> 0.8.0'
