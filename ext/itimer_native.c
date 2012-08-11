@@ -1,6 +1,6 @@
+#include <math.h>
 #include <ruby.h>
 #include <sys/time.h>
-#include <unistd.h>
 
 VALUE itimer_real;
 VALUE itimer_virtual;
@@ -34,7 +34,7 @@ VALUE rb_itimer_set(VALUE self, VALUE which_val, VALUE new_value) {
 
   double dbl_value = NUM2DBL(new_value);
 
-  value.it_value.tv_sec = floor(dbl_value);
+  value.it_value.tv_sec = (int)floor(dbl_value);
   value.it_value.tv_usec = (dbl_value - floor(dbl_value)) * 1000000;
 
   int ret = setitimer(which_from_val(which_val), &value, NULL);
@@ -60,13 +60,13 @@ VALUE rb_itimer_set_interval(VALUE self, VALUE which_val, VALUE new_value) {
   }
 }
 
-void Init_itimer(void) {
-  VALUE itimer_class = rb_define_class("Itimer", rb_cObject);
+void Init_itimer_native(void) {
+  VALUE itimer_module = rb_const_get(rb_cObject, rb_intern("Itimer"));
 
-  rb_define_singleton_method(itimer_class, "get", rb_itimer_get, 1);
-  rb_define_singleton_method(itimer_class, "get_interval", rb_itimer_get_interval, 1);
-  rb_define_singleton_method(itimer_class, "set", rb_itimer_set, 2);
-  rb_define_singleton_method(itimer_class, "set_interval", rb_itimer_set_interval, 2);
+  rb_define_singleton_method(itimer_module, "get", rb_itimer_get, 1);
+  rb_define_singleton_method(itimer_module, "get_interval", rb_itimer_get_interval, 1);
+  rb_define_singleton_method(itimer_module, "set", rb_itimer_set, 2);
+  rb_define_singleton_method(itimer_module, "set_interval", rb_itimer_set_interval, 2);
 
   itimer_real = ID2SYM(rb_intern("real"));
   itimer_virtual = ID2SYM(rb_intern("virtual"));

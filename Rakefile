@@ -1,7 +1,7 @@
 require 'rake/testtask'
 require 'rake/extensiontask'
 
-Rake::ExtensionTask.new('itimer') do |ext|
+Rake::ExtensionTask.new('itimer_native') do |ext|
   ext.ext_dir = 'ext'
 end
 

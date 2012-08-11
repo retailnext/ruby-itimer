@@ -65,4 +65,18 @@ class ItimerTest < Test::Unit::TestCase
     assert_in_delta( Time.now-start, 1, 0.1 )
     Itimer.set_interval(:real, 0)
   end
+
+  def test_timeout
+    start = Time.now
+    assert_raises( Itimer::Timeout ) do
+      Itimer.timeout(1) { sleep 5 }
+    end
+    assert_in_delta( Time.now-start, 1, 0.1 )
+
+    start = Time.now
+    assert_raises( RuntimeError ) do
+      Itimer.timeout(0.25, RuntimeError) { sleep 5 }
+    end
+    assert_in_delta( Time.now-start, 0.25, 0.1 )
+  end
 end
