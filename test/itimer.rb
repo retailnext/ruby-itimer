@@ -29,9 +29,9 @@ class ItimerTest < Test::Unit::TestCase
     Itimer.set(:prof, 0.5)
 
     sleep 0.5
-    assert_in_delta( 4.5, Itimer.get(:real), 0.01 )
-    assert_in_delta( 4, Itimer.get(:virtual), 0.01 )
-    assert_in_delta( 0.5, Itimer.get(:prof), 0.01 )
+    assert_in_delta( 4.5, Itimer.get(:real), 0.1 )
+    assert_in_delta( 4, Itimer.get(:virtual), 0.1 )
+    assert_in_delta( 0.5, Itimer.get(:prof), 0.1 )
 
     assert_raises( Errno::EINVAL) { Itimer.set(:real, 2**32) }
 
@@ -56,10 +56,11 @@ class ItimerTest < Test::Unit::TestCase
     assert_in_delta( Time.now-start, 1, 0.1 )
 
     start = Time.now
-    Itimer.set_interval(:real, 1)
     Itimer.set(:real, 0.5)
+    Itimer.set_interval(:real, 1)
     assert_equal( 'ALRM', wait_for_sig.call )
     assert_in_delta( Time.now-start, 0.5, 0.1 )
+    assert_in_delta( Itimer.get(:real), 1, 0.1 )
 
     start = Time.now
     assert_equal( 'ALRM', wait_for_sig.call )
