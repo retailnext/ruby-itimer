@@ -1,4 +1,4 @@
-# Itimer [![Build Status](https://secure.travis-ci.org/nearbuy/ruby-itimer.png?branch=master)](http://travis-ci.org/nearbuy/ruby-itimer
+# Itimer [![Build Status](https://secure.travis-ci.org/nearbuy/ruby-itimer.png?branch=master)]
 
 Drop-in replacement for stdlib Timeout that uses POSIX interval timers instead of threads.  Not as portable but much lighter weight.  Also includes low-level wrappers for setitimer and getitimer.
 
