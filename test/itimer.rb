@@ -90,4 +90,14 @@ class ItimerTest < Test::Unit::TestCase
     end
     assert_in_delta( Time.now-start, 0.25, 0.1 )
   end
+
+  def test_exception
+    start = Time.now
+    assert_raises( ArgumentError ) do
+      Itimer.timeout(1) { raise ArgumentError }
+    end
+    assert_in_delta( Time.now-start, 0, 0.1 )
+
+    assert_equal( 0, Itimer.get(:real) )
+  end
 end

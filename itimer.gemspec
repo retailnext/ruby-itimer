@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'itimer'
-  s.version = '3'
+  s.version = '4'
 
   s.authors = ['Nate Mueller']
   s.date = '2012-08-10'

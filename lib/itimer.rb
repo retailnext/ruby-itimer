@@ -9,9 +9,12 @@ module Itimer
       raise klass
     end
 
-    set(:real, seconds)
-    ret = yield
-    set(:real, 0)
+    begin
+      set(:real, seconds)
+      ret = yield
+    ensure
+      set(:real, 0)
+    end
 
     return ret
   end
