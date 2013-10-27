@@ -81,6 +81,43 @@ class ItimerTest < Test::Unit::TestCase
       Itimer.timeout(0.25, RuntimeError) { sleep 5 }
     end
     assert_in_delta( Time.now-start, 0.25, 0.1 )
+
+    # nesting
+    start = Time.now
+    assert_raise( Itimer::Timeout ) do
+      Itimer.timeout(0.25) do
+        Itimer.timeout(0.5) do
+          sleep 6
+        end
+      end
+    end
+
+    start = Time.now
+    assert_raise( RuntimeError ) do
+      Itimer.timeout(0.25) do
+        Itimer.timeout(0.1, RuntimeError) do
+          sleep 1
+        end
+      end
+    end
+    assert_in_delta( Time.now-start, 0.1, 0.1 )
+
+    start = Time.now
+    timeouts = false
+    assert_raise( Itimer::Timeout ) do
+      Itimer.timeout(0.25) do
+        begin
+          Itimer.timeout(0.1) do
+            sleep 1
+          end
+        rescue Itimer::Timeout
+          timeouts = true
+        end
+        sleep 1
+      end
+    end
+    assert( timeouts )
+    assert_in_delta( Time.now-start, 0.25, 0.1 )
   end
 
   def test_compat

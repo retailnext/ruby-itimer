@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    itimer (4)
+    itimer (5)
 
 GEM
   remote: http://rubygems.org/

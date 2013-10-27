@@ -9,11 +9,21 @@ module Itimer
       raise klass
     end
 
+    prev = get(:real)
+    start = Time.now
+    if prev > 0
+      seconds = [prev, seconds].min
+    end
+
     begin
       set(:real, seconds)
       ret = yield
     ensure
-      set(:real, 0)
+      if prev > 0
+        set(:real, [prev - (Time.now-start), 0].max)
+      else
+        set(:real, 0)
+      end
     end
 
     return ret
