@@ -118,6 +118,23 @@ class ItimerTest < Test::Unit::TestCase
     end
     assert( timeouts )
     assert_in_delta( Time.now-start, 0.25, 0.1 )
+
+    start = Time.now
+    timeouts = false
+    assert_raise( Itimer::Timeout ) do
+      Itimer.timeout(0.25) do
+        begin
+          Itimer.timeout(3) do
+            sleep 1
+          end
+        rescue Itimer::Timeout
+          timeouts = true
+        end
+        sleep 1
+      end
+    end
+    assert( timeouts )
+    assert_in_delta( Time.now-start, 0.25, 0.1 )
   end
 
   def test_compat

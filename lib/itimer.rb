@@ -20,7 +20,7 @@ module Itimer
       ret = yield
     ensure
       if prev > 0
-        set(:real, [prev - (Time.now-start), 0].max)
+        set(:real, [prev - (Time.now-start), 0.01].max)
       else
         set(:real, 0)
       end
