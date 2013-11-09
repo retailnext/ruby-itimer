@@ -14,12 +14,22 @@ class ItimerTest < Test::Unit::TestCase
       raise Exception.new('ALRM')
     end
 
-    Signal.trap 'VTALRM' do
-      raise Exception.new('VTALRM')
-    end
-
     Signal.trap 'PROF' do
       raise Exception.new('PROF')
+    end
+
+    can_trap_vtalrm = true
+    begin
+      # this fails on ruby >= 2.0.0
+      Signal.trap('VTALRM', 'default')
+    rescue ArgumentError
+      can_trap_vtalrm = false
+    end
+
+    if can_trap_vtalrm
+      Signal.trap 'VTALRM' do
+        raise Exception.new('VTALRM')
+      end
     end
 
     assert_equal( 0, Itimer.get(:real) )
