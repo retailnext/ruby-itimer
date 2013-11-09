@@ -3,6 +3,12 @@ require 'test/unit'
 require 'itimer/compat'
 
 class ItimerTest < Test::Unit::TestCase
+  def teardown
+    assert_equal( 0, Itimer.get(:real) )
+    assert_equal( 0, Itimer.get(:virtual) )
+    assert_equal( 0, Itimer.get(:prof) )
+  end
+
   def test_itimer
     Signal.trap 'ALRM' do
       raise Exception.new('ALRM')
@@ -67,6 +73,7 @@ class ItimerTest < Test::Unit::TestCase
     assert_equal( 'ALRM', wait_for_sig.call )
     assert_in_delta( Time.now-start, 1.2, 0.1 )
     Itimer.set_interval(:real, 0)
+    Itimer.set(:real, 0)
   end
 
   def test_timeout
@@ -101,7 +108,9 @@ class ItimerTest < Test::Unit::TestCase
       end
     end
     assert_in_delta( Time.now-start, 0.1, 0.1 )
+  end
 
+  def test_nested_timeouts_inner_rescue
     start = Time.now
     timeouts = false
     assert_raise( Itimer::Timeout ) do
@@ -118,6 +127,9 @@ class ItimerTest < Test::Unit::TestCase
     end
     assert( timeouts )
     assert_in_delta( Time.now-start, 0.25, 0.1 )
+  end
+
+  def test_nested_timeouts_larger_inner
 
     start = Time.now
     timeouts = false
