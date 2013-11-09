@@ -32,15 +32,15 @@ Signal.trap('VTALRM') { raise Itimer::Timeout }
 begin
   # set :real, :virtual and :prof
   Itimer.set(:virtual, 1)
-  do\_expensive\_computation()
+  do_expensive_computation()
 rescue Itimer::Timeout
   puts 'Execution time expired'
 end
 
 Signal.trap('ALRM') { print '.' }
 
-Itimer.set\_interval(:real, 0.5)
-do\_expensive\_computation()
+Itimer.set_interval(:real, 0.5)
+do_expensive_computation()
 puts 'Done'
 ```
 
@@ -55,6 +55,7 @@ getitimer(2), setitimer(2)
 ## Authors
 
 * Nate Mueller ([natemueller](https://github.com/natemueller))
+* Peter Sanford ([psanford](https://github.com/psanford))
 
 ## License
 
