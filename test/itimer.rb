@@ -176,4 +176,45 @@ class ItimerTest < Test::Unit::TestCase
 
     assert_equal( 0, Itimer.get(:real) )
   end
+
+  def test_exceptions_caught_at_right_level
+    inner_exception = false
+    outer_exception = false
+    begin
+      Itimer.timeout(0.25) do
+        begin
+          sleep 0.5
+        rescue Itimer::Timeout
+          inner_exception = true
+        end
+      end
+    rescue Itimer::Timeout
+      outer_exception = true
+    end
+
+    assert( outer_exception )
+    assert( !inner_exception )
+  end
+
+  def test_throwing_exception_in_nested_itimer
+    inner_exception = false
+    outer_exception = false
+    begin
+      Itimer.timeout(0.25) do
+        begin
+          Itimer.timeout(0.1) do
+            throw ArgumentError
+          end
+        rescue ArgumentError
+          inner_exception = true
+        end
+        sleep 0.5
+      end
+    rescue Itimer::Timeout
+      outer_exception = true
+    end
+
+    assert( inner_exception )
+    assert( outer_exception )
+  end
 end
