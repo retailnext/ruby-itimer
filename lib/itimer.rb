@@ -21,6 +21,7 @@ module Itimer
     end
 
     timed_out = true
+    ret = nil
 
     catch catch_name do
       set(:real, seconds)

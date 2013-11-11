@@ -217,4 +217,12 @@ class ItimerTest < Test::Unit::TestCase
     assert( inner_exception )
     assert( outer_exception )
   end
+
+  def test_return_value
+    got = Itimer.timeout(1) do
+      1
+    end
+
+    assert_equal( 1, got )
+  end
 end
