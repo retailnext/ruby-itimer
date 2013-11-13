@@ -140,7 +140,6 @@ class ItimerTest < Test::Unit::TestCase
   end
 
   def test_nested_timeouts_larger_inner
-
     start = Time.now
     timeouts = false
     assert_raise( Itimer::Timeout ) do
@@ -185,15 +184,17 @@ class ItimerTest < Test::Unit::TestCase
         begin
           sleep 0.5
         rescue Itimer::Timeout
-          inner_exception = true
+          inner_exception = $!
         end
       end
     rescue Itimer::Timeout
-      outer_exception = true
+      outer_exception = $!
     end
 
     assert( outer_exception )
     assert( !inner_exception )
+
+    assert( outer_exception.backtrace.find {|bt| bt.include?('sleep') } )
   end
 
   def test_throwing_exception_in_nested_itimer

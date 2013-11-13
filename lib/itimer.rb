@@ -11,7 +11,11 @@ module Itimer
     catch_name = "itimer_#{@counter}"
 
     prev_handler = Signal.trap 'ALRM' do
-      throw catch_name
+      begin
+        raise klass
+      rescue klass
+        throw(catch_name, $!)
+      end
     end
 
     prev = get(:real)
@@ -23,7 +27,7 @@ module Itimer
     timed_out = true
     ret = nil
 
-    catch catch_name do
+    exception = catch(catch_name) do
       set(:real, seconds)
       begin
         ret = yield
@@ -40,7 +44,7 @@ module Itimer
     end
 
     if timed_out
-      raise klass
+      raise exception
     end
 
     return ret
