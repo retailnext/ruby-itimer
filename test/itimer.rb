@@ -140,21 +140,27 @@ class ItimerTest < Test::Unit::TestCase
   end
 
   def test_nested_timeouts_larger_inner
+    inner_exception = false
+    outer_exception = false
+
     start = Time.now
-    timeouts = false
-    assert_raise( Itimer::Timeout ) do
+    begin
       Itimer.timeout(0.25) do
         begin
           Itimer.timeout(3) do
             sleep 1
           end
         rescue Itimer::Timeout
-          timeouts = true
+          inner_exception = true
         end
         sleep 1
       end
+    rescue Itimer::Timeout
+      outer_exception = true
     end
-    assert( timeouts )
+
+    assert( outer_exception )
+    assert( !inner_exception )
     assert_in_delta( Time.now-start, 0.25, 0.1 )
   end
 

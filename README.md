@@ -44,6 +44,10 @@ do_expensive_computation()
 puts 'Done'
 ```
 
+## Known Issues
+
+This module is not designed to work with ruby threads. If you set timers in multiple ruby threads at the same time some of them will not fire.
+
 ## Support
 
 Please report issues at https://github.com/nearbuy/ruby-itimer/issues
