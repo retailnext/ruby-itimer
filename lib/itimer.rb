@@ -39,8 +39,9 @@ module Itimer
           timed_out = false
         ensure
           @active_timeout = prev_timeout
-          if prev_timeout
-            set(:real, prev_timeout - Time.now)
+          now = Time.now
+          if prev_timeout && prev_timeout - now > 0
+            set(:real, prev_timeout - now)
           else
             set(:real, 0)
           end
