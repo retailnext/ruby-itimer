@@ -21,32 +21,32 @@ module Itimer
 
       catch_name = "itimer_#{@counter}"
 
-      prev_handler = Signal.trap 'ALRM' do
-        begin
-          raise klass
-        rescue klass
-          throw(catch_name, $!)
-        end
-      end
-
       timed_out = true
       @active_timeout = absolute_timeout
 
       exception = catch(catch_name) do
+        prev_handler = Signal.trap 'ALRM' do
+          begin
+            raise klass
+          rescue klass
+            throw(catch_name, $!)
+          end
+        end
+
         set(:real, seconds)
         begin
           ret = yield
           timed_out = false
         ensure
           @active_timeout = prev_timeout
+          Signal.trap('ALRM', prev_handler)
+
           now = Time.now
           if prev_timeout && prev_timeout - now > 0
             set(:real, prev_timeout - now)
           else
             set(:real, 0)
           end
-
-          Signal.trap('ALRM', prev_handler)
         end
       end
 
