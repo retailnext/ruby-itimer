@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'itimer'
-  s.version = '10'
+  s.version = '11'
 
   s.authors = ['Nate Mueller', 'Peter Sanford']
   s.summary = 'Timeout replacement using POSIX interval timers'
