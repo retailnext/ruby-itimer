@@ -40,6 +40,7 @@ VALUE rb_itimer_set(VALUE self, VALUE which_val, VALUE new_value) {
   int ret = setitimer(which_from_val(which_val), &value, NULL);
   if (ret != 0) {
     rb_sys_fail(0);
+    return Qfalse;
   } else {
     return Qtrue;
   }
@@ -62,6 +63,7 @@ VALUE rb_itimer_set_interval(VALUE self, VALUE which_val, VALUE new_value) {
   int ret = setitimer(which_from_val(which_val), &value, NULL);
   if (ret != 0) {
     rb_sys_fail(0);
+    return Qfalse;
   } else {
     return Qtrue;
   }
